@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "@solana-developers/helpers": "^2.4.0",
+    "@solana/web3.js": "^1.95.2",
+    "base64-js": "^1.5.1",
+    "dotenv": "^16.4.5",
+    "esrun": "^3.2.26"
+  },
+  "name": "solana-training",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "send": "node --loader ts-node/esm send-sol.ts",
+    "max": "node --loader ts-node/esm generate-keypair_max.ts",
+    "lava": "node --loader ts-node/esm practice-1/key-grinder.ts",
+    "gen": "node --loader ts-node/esm generate-keypair.ts",
+    "load": "node --loader ts-node/esm load-keypair.ts",
+    "check": "node --loader ts-node/esm check-balance.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "ts-node": "^10.9.2"
+  }
+}
