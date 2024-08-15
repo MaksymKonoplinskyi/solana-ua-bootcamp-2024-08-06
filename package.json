@@ -11,7 +11,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "send": "node --loader ts-node/esm send-sol.ts",
+    "send": "node --loader ts-node/esm practice-4/send-sol.ts",
     "max": "node --loader ts-node/esm generate-keypair_max.ts",
     "lava": "node --loader ts-node/esm practice-1/key-grinder.ts",
     "gen": "node --loader ts-node/esm generate-keypair.ts",
