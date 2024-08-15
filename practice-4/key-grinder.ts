@@ -9,8 +9,8 @@ let publicKeyBase58 = ''
 do {
   keypair = Keypair.generate()
   publicKeyBase58 = keypair.publicKey.toBase58()
-} while (!publicKeyBase58.startsWith('LAVA')) // Префікс проекту, розробкою якого я зараз займаюсь (LAVARAGE)
-
+} while (!publicKeyBase58.startsWith('MAX')) 
+  
 const secretKeyBase64 = fromByteArray(keypair.secretKey)
 
 const endTime = Date.now()
