@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "@metaplex-foundation/mpl-token-metadata": "^2.13.0",
     "@solana-developers/helpers": "^2.4.0",
+    "@solana/spl-memo": "^0.2.5",
+    "@solana/spl-token": "^0.4.8",
     "@solana/web3.js": "^1.95.2",
     "base64-js": "^1.5.1",
     "dotenv": "^16.4.5",
@@ -11,6 +14,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "meta": "node --loader ts-node/esm practice-5/create-token-metadata.ts",
+    "m": "node --loader ts-node/esm practice-5/mint-tokens.ts",
+    "acc": "node --loader ts-node/esm practice-5/create-token-account.ts",
+    "mint": "node --loader ts-node/esm practice-5/create-token-mint.ts",
     "send": "node --loader ts-node/esm practice-4/send-sol.ts",
     "max": "node --loader ts-node/esm generate-keypair_max.ts",
     "key": "node --loader ts-node/esm practice-4/key-grinder.ts",

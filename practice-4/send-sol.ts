@@ -7,7 +7,8 @@ import {
   Transaction,
   clusterApiUrl,
   Connection,
-  sendAndConfirmTransaction
+  sendAndConfirmTransaction,
+  TransactionInstruction
 } from "@solana/web3.js";
 
 let privateKey = process.env["SECRET_KEY"];
@@ -31,10 +32,35 @@ const sendSolInstruction = SystemProgram.transfer({
   toPubkey: recipient,
   lamports: 0.01 * LAMPORTS_PER_SOL,
 });
+
+// Створюємо memo інструкцію вручну
+const memoText = "My memo text";
+const memoInstruction = new TransactionInstruction({
+  keys: [],
+  programId: new PublicKey("MemoSq4gqABAXKb96qnH8TysNcWxMyWCqXgDLGmfcHr"), // ID програми Memo
+  data: Buffer.from(memoText), // Ваш новий текст memo
+});
+
 transaction.add(sendSolInstruction);
+transaction.add(memoInstruction); // Додаємо memo інструкцію до транзакції
 
 const signature = await sendAndConfirmTransaction(connection, transaction, [
   sender,
 ]);
 
 console.log(`✅ Transaction confirmed, signature: ${signature}!`);
+
+// Отримуємо підтверджену транзакцію для отримання логів
+const confirmedTransaction = await connection.getConfirmedTransaction(signature);
+
+if (confirmedTransaction) {
+  const logs = confirmedTransaction.meta?.logMessages;
+  if (logs) {
+    console.log("📜 Transaction Logs:");
+    logs.forEach(log => console.log(log));
+  } else {
+    console.log("No logs found for this transaction.");
+  }
+} else {
+  console.log("Transaction confirmation not found.");
+}
