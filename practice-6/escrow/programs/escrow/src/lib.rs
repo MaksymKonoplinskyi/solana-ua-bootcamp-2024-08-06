@@ -15,6 +15,10 @@ declare_id!("6dNsPSbemffAQRoe6PGuN4kSuhRwPgbKPPifsTLefAr6");
 pub mod escrow {
     use super::*;
 
+    pub fn take_offer(context: Context<TakeOffer>) -> Result<()> {
+        instructions::take_offer::send_wanted_tokens_to_maker(&context)?;
+        instructions::take_offer::withdraw_and_close_vault(context)
+    }
     pub fn make_offer(
         context: Context<MakeOffer>,
         id: u64,
@@ -24,5 +28,6 @@ pub mod escrow {
         instructions::make_offer::send_offered_tokens_to_vault(&context, token_a_offered_amount)?;
         instructions::make_offer::save_offer(context, id, token_b_wanted_amount)
     }
+    
 }
 
