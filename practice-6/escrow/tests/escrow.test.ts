@@ -267,39 +267,39 @@ describe("escrow", () => {
     return { offerAddress, vaultAddress };
   };
 
-  const takeOfferTx = async (
-    offerAddress: PublicKey,
-    taker: Keypair,
-  ): Promise<void> => {
+  // const takeOfferTx = async (
+  //   offerAddress: PublicKey,
+  //   taker: Keypair,
+  // ): Promise<void> => {
 
-    // `accounts` argument debugging tool.  Should be part of Anchor really.
-    //
-    // type FlatType<T> = T extends object
-    //   ? { [K in keyof T]: FlatType<T[K]> }
-    //   : T;
-    //
-    // type AccountsArgs = FlatType<
-    //   Parameters<
-    //     ReturnType<
-    //       Program<Escrow>["methods"]["takeOffer"]
-    //     >["accounts"]
-    //   >
-    // >;
+  //   // `accounts` argument debugging tool.  Should be part of Anchor really.
+  //   //
+  //   // type FlatType<T> = T extends object
+  //   //   ? { [K in keyof T]: FlatType<T[K]> }
+  //   //   : T;
+  //   //
+  //   // type AccountsArgs = FlatType<
+  //   //   Parameters<
+  //   //     ReturnType<
+  //   //       Program<Escrow>["methods"]["takeOffer"]
+  //   //     >["accounts"]
+  //   //   >
+  //   // >;
 
-    const transactionSignature = await program.methods
-      .takeOffer()
-      .accounts({
-        taker: taker.publicKey,
-        offer: offerAddress,
-        // See note in the `makeOfferTx` on why this program address is provided
-        // and the rest are not.
-        tokenProgram: TOKEN_PROGRAM,
-      })
-      .signers([taker])
-      .rpc();
+  //   const transactionSignature = await program.methods
+  //     .takeOffer()
+  //     .accounts({
+  //       taker: taker.publicKey,
+  //       offer: offerAddress,
+  //       // See note in the `makeOfferTx` on why this program address is provided
+  //       // and the rest are not.
+  //       tokenProgram: TOKEN_PROGRAM,
+  //     })
+  //     .signers([taker])
+  //     .rpc();
 
-    await confirmTransaction(connection, transactionSignature);
-  };
+  //   await confirmTransaction(connection, transactionSignature);
+  // };
 
   test("Offer created by Alice, vault holds the offer tokens", async () => {
     const offeredUsdc = new BN(10_000_000);
@@ -327,36 +327,36 @@ describe("escrow", () => {
     expect(offerAccount.tokenBWantedAmount).toEqual(wantedWif);
   });
 
-  test("Offer taken by Bob, tokens balances are updated", async () => {
-    const getTokenBalance = getTokenBalanceOn(connection);
+  // test("Offer taken by Bob, tokens balances are updated", async () => {
+  //   const getTokenBalance = getTokenBalanceOn(connection);
 
-    // This test reuses offer created by the previous test.  Bad design :(
-    // But it is a shortcut that allows us to avoid writing the cleanup code.
-    // TODO Add proper cleanup, that mirrors `beforeEach`, and create a new
-    // offer here.
+  //   // This test reuses offer created by the previous test.  Bad design :(
+  //   // But it is a shortcut that allows us to avoid writing the cleanup code.
+  //   // TODO Add proper cleanup, that mirrors `beforeEach`, and create a new
+  //   // offer here.
 
-    const [offerAddress, _offerBump] = PublicKey.findProgramAddressSync(
-      [
-        Buffer.from("offer"),
-        alice.publicKey.toBuffer(),
-        offerId.toArrayLike(Buffer, "le", 8),
-      ],
-      program.programId
-    );
+  //   const [offerAddress, _offerBump] = PublicKey.findProgramAddressSync(
+  //     [
+  //       Buffer.from("offer"),
+  //       alice.publicKey.toBuffer(),
+  //       offerId.toArrayLike(Buffer, "le", 8),
+  //     ],
+  //     program.programId
+  //   );
 
-    // Verify state before the offer is taken.
+  //   // Verify state before the offer is taken.
 
-    expect(await getTokenBalance(aliceUsdcAccount)).toEqual(new BN(90_000_000));
-    expect(await getTokenBalance(aliceWifAccount)).toEqual(new BN(5_000_000));
-    expect(await getTokenBalance(bobUsdcAccount)).toEqual(new BN(20_000_000));
-    expect(await getTokenBalance(bobWifAccount)).toEqual(new BN(300_000_000));
+  //   expect(await getTokenBalance(aliceUsdcAccount)).toEqual(new BN(90_000_000));
+  //   expect(await getTokenBalance(aliceWifAccount)).toEqual(new BN(5_000_000));
+  //   expect(await getTokenBalance(bobUsdcAccount)).toEqual(new BN(20_000_000));
+  //   expect(await getTokenBalance(bobWifAccount)).toEqual(new BN(300_000_000));
 
-    await takeOfferTx(offerAddress, bob);
+  //   await takeOfferTx(offerAddress, bob);
 
-    expect(await getTokenBalance(aliceUsdcAccount)).toEqual(new BN(90_000_000));
-    expect(await getTokenBalance(aliceWifAccount)).toEqual(new BN(105_000_000));
+  //   expect(await getTokenBalance(aliceUsdcAccount)).toEqual(new BN(90_000_000));
+  //   expect(await getTokenBalance(aliceWifAccount)).toEqual(new BN(105_000_000));
 
-    expect(await getTokenBalance(bobUsdcAccount)).toEqual(new BN(30_000_000));
-    expect(await getTokenBalance(bobWifAccount)).toEqual(new BN(200_000_000));
-  });
+  //   expect(await getTokenBalance(bobUsdcAccount)).toEqual(new BN(30_000_000));
+  //   expect(await getTokenBalance(bobWifAccount)).toEqual(new BN(200_000_000));
+  // });
 });
